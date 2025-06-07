@@ -86,4 +86,8 @@ public class SharedCollection {
                 ", title='" + title + '\'' +
                 '}';
     }
+
+    public void addMedia(Media savedMedia) {
+        mediaList.add(savedMedia);
+    }
 }

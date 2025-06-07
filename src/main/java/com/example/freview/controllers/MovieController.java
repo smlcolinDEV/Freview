@@ -21,4 +21,9 @@ public class MovieController {
     public List<Movie> getAllMovies(){
         return movieService.getAllMovies();
     }
+
+    @GetMapping("/popular")
+    public String getPopularMovies() {
+        return movieService.getPopularMovies();
+    }
 }

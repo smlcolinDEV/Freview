@@ -3,24 +3,27 @@ package com.example.freview.services;
 import com.example.freview.dto.MediaDTO;
 import com.example.freview.dto.SharedCollectionDTO;
 import com.example.freview.dto.UserDTO;
-import com.example.freview.models.Media;
-import com.example.freview.models.SharedCollection;
-import com.example.freview.models.User;
+import com.example.freview.models.*;
+import com.example.freview.repositories.MediaRepostiory;
 import com.example.freview.repositories.SharedCollectionRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class SharedCollectionService {
+
     private final SharedCollectionRepository sharedCollectionRepository;
     private final ReviewService reviewService;
+    private TmdbService tmdbService;
+    private final MediaRepostiory mediaRepostiory;
 
-    public SharedCollectionService(SharedCollectionRepository sharedCollectionRepository, ReviewService reviewService) {
+    public SharedCollectionService(SharedCollectionRepository sharedCollectionRepository, ReviewService reviewService, TmdbService tmdbService, MediaRepostiory mediaRepostiory) {
         this.sharedCollectionRepository = sharedCollectionRepository;
         this.reviewService = reviewService;
+        this.tmdbService = tmdbService;
+        this.mediaRepostiory = mediaRepostiory;
     }
 
     public List<SharedCollection> findAllSharedCollections(){
@@ -53,6 +56,23 @@ public class SharedCollectionService {
         );
     }
     @Transactional
+    public void addMediaFromTmdbToSharedList(Long sharedListId, int tmdbMediaId) {
+        // Fetch media details from TMDb
+        Movie movie = tmdbService.fetchMediaDetails(tmdbMediaId);
+
+        // Save the media object to the database
+        Media savedMedia = mediaRepostiory.save(movie);
+
+        // Add the saved media to the shared list
+        SharedCollection sharedCollection = sharedCollectionRepository.findById(sharedListId)
+                .orElseThrow(() -> new RuntimeException("SharedCollection not found"));
+        sharedCollection.getMediaList().add(savedMedia);
+        sharedCollectionRepository.save(sharedCollection);
+
+        // Create reviews for the media in the shared list
+        reviewService.createReviewsForMediaInSharedList(savedMedia, sharedCollection);
+    }
+    @Transactional
     public void addMediaToSharedList(Long sharedListId, Media media) {
         SharedCollection sharedCollection = sharedCollectionRepository.findById(sharedListId)
                 .orElseThrow(() -> new RuntimeException("SharedCollection not found"));
@@ -69,4 +89,9 @@ public class SharedCollectionService {
         sharedCollectionRepository.save(sharedCollection);
         reviewService.createReviewsForUserInSharedList(user, sharedCollection);
     }
+
+    public void delete(Long sharedListId){
+        sharedCollectionRepository.deleteById(sharedListId);
+    }
+
 }

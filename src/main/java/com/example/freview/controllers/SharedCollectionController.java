@@ -6,6 +6,7 @@ import com.example.freview.models.SharedCollection;
 import com.example.freview.models.User;
 import com.example.freview.services.MovieService;
 import com.example.freview.services.SharedCollectionService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,5 +38,21 @@ public class SharedCollectionController {
     @PostMapping("/{sharedListId}/users")
     public void addUserToSharedList(@PathVariable Long sharedListId, @RequestBody User user) {
         sharedCollectionService.addUserToSharedList(sharedListId, user);
+    }
+    @PostMapping("/{sharedListId}/add-media")
+    public ResponseEntity<String> addMediaToSharedList(
+            @PathVariable Long sharedListId,
+            @RequestParam int tmdbMediaId) {
+
+        try {
+            sharedCollectionService.addMediaFromTmdbToSharedList(sharedListId, tmdbMediaId);
+            return ResponseEntity.ok("Media added to the shared list successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Failed to add media to the shared list: " + e.getMessage());
+        }
+    }
+    @DeleteMapping("/id")
+    public void deleteSharedList(@PathVariable Long sharedListId) {
+        sharedCollectionService.delete(sharedListId);
     }
 }

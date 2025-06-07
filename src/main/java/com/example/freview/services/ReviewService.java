@@ -1,7 +1,9 @@
 package com.example.freview.services;
 
 import com.example.freview.dto.ReviewDTO;
+import com.example.freview.dto.UpdatedReviewRequestDTO;
 import com.example.freview.enums.WatchedStatus;
+import com.example.freview.exceptions.ResourceNotFoundException;
 import com.example.freview.models.Media;
 import com.example.freview.models.Review;
 import com.example.freview.models.SharedCollection;
@@ -23,6 +25,9 @@ public class ReviewService {
     }
     public List<Review> getReviewsByUserId(Long userId) {
         return reviewRepository.findByUserId(userId);
+    }
+    public Review getReviewById(Long id){
+        return reviewRepository.findById(id).orElse(null);
     }
     public List<ReviewDTO> getReviewsByMediaIdAndSharedListId(Long mediaId, Long sharedListId) {
         return reviewRepository.findReviewsByMediaIdAndSharedListId(mediaId,sharedListId).stream()
@@ -67,5 +72,33 @@ public class ReviewService {
             review.setSharedCollection(sharedCollection);
             reviewRepository.save(review);
         }
+    }
+
+    public Review save(Review review) {
+        return reviewRepository.save(review);
+    }
+    public Review update(Long id,Review review){
+        var existingReview = reviewRepository.findById(review.getId());
+        if(existingReview.isPresent()){
+            Review updatedReview = existingReview.get();
+            updatedReview.setComment(review.getComment());
+            updatedReview.setRating(review.getRating());
+            updatedReview.setWatchedStatus(review.getWatchedStatus());
+            return reviewRepository.save(updatedReview);
+        }
+        else{
+            throw new ResourceNotFoundException("Car not found with id: " + id);
+        }
+    }
+
+    public Review updateReview(UpdatedReviewRequestDTO request) {
+        var reviewToUpdate =  getReviewById(request.getId());
+        reviewToUpdate.setComment(request.getComment());
+        return reviewRepository.save(reviewToUpdate);
+    }
+
+
+    public void deleteReview(Long reviewId) {
+        reviewRepository.deleteById(reviewId);
     }
 }
