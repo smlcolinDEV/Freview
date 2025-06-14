@@ -2,6 +2,7 @@ package com.example.freview.models;
 
 import com.example.freview.enums.WatchedStatus;
 import jakarta.persistence.Entity;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Entity
@@ -11,6 +12,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Movie extends Media {
+    @NotNull
     private Integer runtime;
 
 

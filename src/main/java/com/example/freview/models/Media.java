@@ -2,6 +2,9 @@ package com.example.freview.models;
 
 import com.example.freview.enums.WatchedStatus;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,7 +20,10 @@ import java.util.List;
 public abstract class Media {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @NotNull
     private Long id;
+    @NotBlank
+    @Size(min = 1, max = 100)
     private String title;
     @Column(columnDefinition = "TEXT")
     private String overview;
