@@ -30,7 +30,8 @@ public class SharedCollectionService {
     private final MediaRepostiory mediaRepostiory;
     private final UserService userService;
     private final MovieRepository movieRepostiory;
-    private ReviewRepository reviewRepository;
+    private final ReviewRepository reviewRepository;
+    private final GetMediaFromTmdbService getMediaFromTmdbService;
 
     public SharedCollection addSharedCollection(SharedCollection sharedCollection) {
         return sharedCollectionRepository.save(sharedCollection);
@@ -107,7 +108,7 @@ public class SharedCollectionService {
     @Transactional
     public void addMovieFromTmdbToSharedList(Long sharedListId, Long movieId) {
 
-        MovieDTO movieDTO = movieService.fetchMovie(movieId);
+        MovieDTO movieDTO = getMediaFromTmdbService.fetchMovie(movieId);
 
         Movie movie = new Movie();
 
@@ -132,7 +133,7 @@ public class SharedCollectionService {
     @Transactional
     public void addSerieFromTmdbToSharedList(Long sharedListId, Long serieId) {
 
-        Serie toSavedSerie = this.serieService.fetchSerie(serieId);
+        Serie toSavedSerie = this.getMediaFromTmdbService.fetchSerie(serieId);
 
         // Save the media object to the database
         Media savedMedia = mediaRepostiory.save(toSavedSerie);

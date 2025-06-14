@@ -4,6 +4,7 @@ import com.example.freview.models.Role;
 import com.example.freview.models.User;
 import com.example.freview.repositories.RoleRepository;
 import com.example.freview.repositories.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @Slf4j
 @Service
+
 public class RoleService {
     private RoleRepository roleRepository;
     private UserRepository userRepository;
@@ -20,7 +22,7 @@ public class RoleService {
     public List<Role> findAll() {
         return roleRepository.findAll();
     }
-
+    @Transactional
     public Role save(Role role) {
         log.info("Saving new role {} to the database", role.getName());
         return roleRepository.save(role);
@@ -39,7 +41,7 @@ public class RoleService {
         // Save the user to persist the changes
         userRepository.save(user);
     }
-
+    @Transactional
     public Role update(Long id, Role updatedRole) {
         return roleRepository.findById(id)
                 .map(existingRole -> {
@@ -48,7 +50,7 @@ public class RoleService {
                 })
                 .orElseThrow(() -> new RuntimeException("Role not found with id " + id));
     }
-
+    @Transactional
     public void delete(Long roleId) {
         roleRepository.deleteById(roleId);
     }

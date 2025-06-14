@@ -1,6 +1,7 @@
 package com.example.freview.controllers;
 
 import com.example.freview.dto.MovieDTO;
+import com.example.freview.services.GetMediaFromTmdbService;
 import com.example.freview.services.MovieService;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,9 +12,11 @@ import java.util.List;
 public class MovieController {
 
     private final MovieService movieService;
+    private final GetMediaFromTmdbService getMediaFromTmdbService;
 
-    public MovieController(MovieService movieService) {
+    public MovieController(MovieService movieService, GetMediaFromTmdbService getMediaFromTmdbService) {
         this.movieService = movieService;
+        this.getMediaFromTmdbService = getMediaFromTmdbService;
     }
 
     @GetMapping
@@ -23,7 +26,7 @@ public class MovieController {
 
     @GetMapping("/popular")
     public List<MovieDTO> getPopularMovies() {
-        return movieService.getPopularMovies();
+        return getMediaFromTmdbService.getPopularMovies();
     }
 
     @PostMapping
