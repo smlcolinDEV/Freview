@@ -11,9 +11,11 @@ import java.util.List;
 @RequestMapping("api/serie")
 public class SerieController {
     private final SerieService serieService;
+
     public SerieController(SerieService serieService) {
         this.serieService = serieService;
     }
+
     @GetMapping
     public List<Serie> getAllSeries() {
         return serieService.getAllMovies();
@@ -21,16 +23,19 @@ public class SerieController {
 
     @GetMapping("/popular")
     public List<SerieDTO> getPopularSeries() {
-       return serieService.getPopularSeries();
+        return serieService.getPopularSeries();
     }
+
     @PostMapping
     public Serie addSerie(@RequestBody Serie serie) {
         return serieService.addSerie(serie);
     }
+
     @PutMapping
     public Serie updateSerie(@RequestBody Serie serie) {
         return serieService.updateSerie(serie);
     }
+
     @DeleteMapping
     public void deleteSerie(@PathVariable Long serieId) {
         serieService.deleteSerie(serieId);

@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface SharedCollectionRepository  extends JpaRepository<SharedCollection,Long> {
+public interface SharedCollectionRepository extends JpaRepository<SharedCollection, Long> {
     @Query("SELECT sc FROM SharedCollection sc JOIN sc.users u WHERE u.id = :userId")
     List<SharedCollection> findSharedCollectionsByUserId(@Param("userId") Long userId);
 }

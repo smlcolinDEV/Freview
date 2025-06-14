@@ -2,8 +2,8 @@ package com.example.freview.security.filters;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.example.freview.dto.LoginRequest;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -76,7 +76,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
      * @param response       HttpServletResponse
      * @param chain          FilterChain
      * @param authentication Authentication
-     * @throws IOException if there is an Input/Output error
+     * @throws IOException      if there is an Input/Output error
      * @throws ServletException if there is a servlet related error
      */
     @Override

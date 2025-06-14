@@ -74,8 +74,8 @@ public class SecurityConfig {
                         .requestMatchers("api/shared/**").permitAll()
                         .requestMatchers(GET, "/api/users").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                         .requestMatchers(POST, "/api/users").hasAnyAuthority("ROLE_ADMIN")
-                        .requestMatchers(PATCH, "/api/users/**" ).permitAll()
-                        .requestMatchers(PUT, "/api/users/**" ).permitAll()
+                        .requestMatchers(PATCH, "/api/users/**").permitAll()
+                        .requestMatchers(PUT, "/api/users/**").permitAll()
                         .requestMatchers(POST, "/api/roles").hasAnyAuthority("ROLE_ADMIN")
                         .requestMatchers(POST, "/api/roles/add-to-user").hasAnyAuthority("ROLE_ADMIN")
                         .anyRequest().authenticated()); // any other endpoints require authentication

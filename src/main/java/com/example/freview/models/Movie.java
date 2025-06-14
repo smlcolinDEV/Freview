@@ -1,9 +1,11 @@
 package com.example.freview.models;
 
-import com.example.freview.enums.WatchedStatus;
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 

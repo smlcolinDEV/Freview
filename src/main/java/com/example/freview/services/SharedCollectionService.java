@@ -14,12 +14,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.nio.file.AccessDeniedException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -40,10 +36,11 @@ public class SharedCollectionService {
         return sharedCollectionRepository.save(sharedCollection);
     }
 
-    public List<SharedCollection> findAllSharedCollections(){
+    public List<SharedCollection> findAllSharedCollections() {
         return sharedCollectionRepository.findAll();
     }
-    public SharedCollectionDTO findSharedCollectionById(Long id){
+
+    public SharedCollectionDTO findSharedCollectionById(Long id) {
         SharedCollection entity = sharedCollectionRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("SharedCollection not found"));
 
@@ -83,11 +80,13 @@ public class SharedCollectionService {
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
+
     public List<SharedCollectionDTO> getSharedCollectionsByUserId(Long userId) {
         return sharedCollectionRepository.findSharedCollectionsByUserId(userId).stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
+
     private SharedCollectionDTO convertToDTO(SharedCollection sharedCollection) {
         List<MediaDTO> mediaDTOs = sharedCollection.getMediaList().stream()
                 .map(media -> new MediaDTO(media.getId(), media.getTitle(), media.getOverview()))
@@ -104,6 +103,7 @@ public class SharedCollectionService {
                 userDTOs
         );
     }
+
     @Transactional
     public void addMovieFromTmdbToSharedList(Long sharedListId, Long movieId) {
 
@@ -146,6 +146,7 @@ public class SharedCollectionService {
         // Create reviews for the media in the shared list
         reviewService.createReviewsForMediaInSharedList(savedMedia, sharedCollection);
     }
+
     @Transactional
     public SharedCollection createSharedCollection(String title) {
 
@@ -161,6 +162,7 @@ public class SharedCollectionService {
 
         return sharedCollectionRepository.save(collection);
     }
+
     @Transactional
     public void joinSharedCollectionById(Long sharedListId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -228,6 +230,7 @@ public class SharedCollectionService {
 
         reviewRepository.save(review);
     }
+
     public SharedCollectionDTO updateSharedCollection(Long id, SharedCollectionDTO dto) {
         SharedCollection collection = sharedCollectionRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("SharedCollection not found"));
@@ -247,9 +250,7 @@ public class SharedCollectionService {
     }
 
 
-
-
-    public void delete(Long sharedListId){
+    public void delete(Long sharedListId) {
         sharedCollectionRepository.deleteById(sharedListId);
     }
 

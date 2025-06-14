@@ -1,6 +1,6 @@
 package com.example.freview.controllers;
 
-import com.example.freview.models.Role;;
+import com.example.freview.models.Role;
 import com.example.freview.repositories.UserRepository;
 import com.example.freview.services.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +15,12 @@ public class RoleController {
     private RoleService roleService;
     @Autowired
     private UserRepository userRepository;
+
     @GetMapping
-    public List<Role> role(){
+    public List<Role> role() {
         return roleService.findAll();
     }
+
     @PostMapping
     public Role createRole(@RequestBody Role role) {
         return roleService.save(role);

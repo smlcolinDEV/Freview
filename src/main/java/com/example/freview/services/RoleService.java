@@ -17,7 +17,7 @@ public class RoleService {
     private RoleRepository roleRepository;
     private UserRepository userRepository;
 
-    public List<Role> findAll(){
+    public List<Role> findAll() {
         return roleRepository.findAll();
     }
 
@@ -39,6 +39,7 @@ public class RoleService {
         // Save the user to persist the changes
         userRepository.save(user);
     }
+
     public Role update(Long id, Role updatedRole) {
         return roleRepository.findById(id)
                 .map(existingRole -> {

@@ -1,6 +1,5 @@
 package com.example.freview.models;
 
-import com.example.freview.enums.WatchedStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

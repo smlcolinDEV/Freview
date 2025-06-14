@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -35,7 +36,7 @@ public class Review {
     @JoinColumn(name = "shared_collection_id")
     private SharedCollection sharedCollection;
 
-    public Review( String comment, Double rating, LocalDate createdDate, WatchedStatus watchedStatus, User user, Media media) {
+    public Review(String comment, Double rating, LocalDate createdDate, WatchedStatus watchedStatus, User user, Media media) {
         this.comment = comment;
         this.rating = rating;
         this.createdDate = createdDate;

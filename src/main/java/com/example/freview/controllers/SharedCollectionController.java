@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/shared")
 public class SharedCollectionController {
     private final SharedCollectionService sharedCollectionService;
-    private EmailService emailService;
+    private final EmailService emailService;
 
     public SharedCollectionController(SharedCollectionService sharedCollectionService, EmailService emailService) {
         this.sharedCollectionService = sharedCollectionService;
@@ -37,6 +37,7 @@ public class SharedCollectionController {
     public List<SharedCollectionDTO> getSharedCollectionsByUserId(@PathVariable Long userId) {
         return sharedCollectionService.getSharedCollectionsByUserId(userId);
     }
+
     @GetMapping("/{sharedCollectionId}")
     public SharedCollectionDTO getSharedCollectionById(@PathVariable Long sharedCollectionId) {
         return sharedCollectionService.findSharedCollectionById(sharedCollectionId);
@@ -61,6 +62,7 @@ public class SharedCollectionController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
+
     @PostMapping("/{sharedListId}/media")
     public ResponseEntity<Void> addMediaToSharedList(
             @PathVariable Long sharedListId,
@@ -78,6 +80,7 @@ public class SharedCollectionController {
         sharedCollectionService.addUserToSharedList(sharedListId, userId);
         return ResponseEntity.noContent().build();
     }
+
     @PostMapping("/{sharedListId}/add-movie")
     public ResponseEntity<String> addMovieFromTmdbToSharedList(
             @PathVariable Long sharedListId,
@@ -86,6 +89,7 @@ public class SharedCollectionController {
         sharedCollectionService.addMovieFromTmdbToSharedList(sharedListId, movieId);
         return ResponseEntity.ok("Movie added to shared collection.");
     }
+
     @PostMapping("/{sharedListId}/add-serie")
     public ResponseEntity<String> addSerieFromTmdbToSharedList(
             @PathVariable Long sharedListId,
@@ -94,6 +98,7 @@ public class SharedCollectionController {
         sharedCollectionService.addSerieFromTmdbToSharedList(sharedListId, serieId);
         return ResponseEntity.ok("Serie added to shared collection.");
     }
+
     @PostMapping("/{sharedListId}/join")
     public ResponseEntity<String> joinSharedCollection(@PathVariable Long sharedListId) {
         sharedCollectionService.joinSharedCollectionById(sharedListId);
@@ -109,6 +114,7 @@ public class SharedCollectionController {
         emailService.sendInvitationEmail(email, inviteUrl);
         return ResponseEntity.ok("Invitation envoyée à " + email);
     }
+
     @PostMapping("/{sharedCollectionId}/media/{mediaId}/review")
     public ResponseEntity<String> updateReviewToMediaInSharedCollection(
             @PathVariable Long sharedCollectionId,
@@ -124,6 +130,7 @@ public class SharedCollectionController {
 
         return ResponseEntity.ok("Review ajoutée avec succès !");
     }
+
     @PutMapping("/{sharedListId}")
     public ResponseEntity<SharedCollectionDTO> updateSharedCollection(
             @PathVariable Long sharedListId,

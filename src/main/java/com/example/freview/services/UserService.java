@@ -5,7 +5,6 @@ import com.example.freview.exceptions.ResourceNotFoundException;
 import com.example.freview.models.User;
 import com.example.freview.repositories.UserRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -55,10 +54,12 @@ public class UserService implements UserDetailsService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
+
     public User getUser(String username) {
         log.info("Fetching user {}", username);
         return userRepository.findByUsername(username);
     }
+
     public List<User> getUsers() {
         log.info("Fetching all users");
         return userRepository.findAll();
@@ -67,9 +68,11 @@ public class UserService implements UserDetailsService {
     public User findById(Long id) {
         return userRepository.findById(id).orElse(null);
     }
+
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
+
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
     }

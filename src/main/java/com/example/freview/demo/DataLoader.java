@@ -73,7 +73,7 @@ public class DataLoader implements CommandLineRunner {
         sharedCollection.setName("Favorite Media");
         SharedCollection sharedCollection2 = new SharedCollection();
         sharedCollection2.setName("Joiining Collection");
-        sharedCollectionRepository.saveAll(List.of(sharedCollection,sharedCollection2));
+        sharedCollectionRepository.saveAll(List.of(sharedCollection, sharedCollection2));
 
         sharedCollectionService.addMediaToSharedList(sharedCollection.getId(), movie1);
         sharedCollectionService.addUserToSharedList(sharedCollection2.getId(), user3.getId());

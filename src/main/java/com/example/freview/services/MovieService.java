@@ -3,30 +3,24 @@ package com.example.freview.services;
 import com.example.freview.dto.MovieDTO;
 import com.example.freview.models.Movie;
 import com.example.freview.repositories.MovieRepository;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.ArrayList;
-
-import java.net.URI;
-
-import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MovieService {
 
+    private static final String BASE_URL = "https://api.themoviedb.org/3";
     private final MovieRepository movieRepository;
-
+    private final RestTemplate restTemplate = new RestTemplate();
     @Value("${tmdb.api.key}")
     private String API_KEY;
-
-    private static final String BASE_URL = "https://api.themoviedb.org/3";
-
-    private final RestTemplate restTemplate = new RestTemplate();
 
     public MovieService(MovieRepository movieRepository) {
         this.movieRepository = movieRepository;
@@ -98,7 +92,7 @@ public class MovieService {
 
         } catch (Exception e) {
             e.printStackTrace();
-            return new MovieDTO(0L, "Not found" , "Not found" , 0);
+            return new MovieDTO(0L, "Not found", "Not found", 0);
         }
     }
 

@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,14 +25,17 @@ public class ReviewService {
     public ReviewService(ReviewRepository reviewRepository) {
         this.reviewRepository = reviewRepository;
     }
+
     public List<Review> getReviewsByUserId(Long userId) {
         return reviewRepository.findByUserId(userId);
     }
-    public Review getReviewById(Long id){
+
+    public Review getReviewById(Long id) {
         return reviewRepository.findById(id).orElse(null);
     }
+
     public List<ReviewDTO> getReviewsByMediaIdAndSharedListId(Long mediaId, Long sharedListId) {
-        return reviewRepository.findReviewsByMediaIdAndSharedListId(mediaId,sharedListId).stream()
+        return reviewRepository.findReviewsByMediaIdAndSharedListId(mediaId, sharedListId).stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
@@ -47,6 +49,7 @@ public class ReviewService {
 
         );
     }
+
     @Transactional
     public void createReviewsForMediaInSharedList(Media media, SharedCollection sharedCollection) {
         for (User user : sharedCollection.getUsers()) {
@@ -80,22 +83,22 @@ public class ReviewService {
     public Review save(Review review) {
         return reviewRepository.save(review);
     }
-    public Review update(Long id,Review review){
+
+    public Review update(Long id, Review review) {
         var existingReview = reviewRepository.findById(review.getId());
-        if(existingReview.isPresent()){
+        if (existingReview.isPresent()) {
             Review updatedReview = existingReview.get();
             updatedReview.setComment(review.getComment());
             updatedReview.setRating(review.getRating());
             updatedReview.setWatchedStatus(review.getWatchedStatus());
             return reviewRepository.save(updatedReview);
-        }
-        else{
+        } else {
             throw new ResourceNotFoundException("Review not found with id: " + id);
         }
     }
 
     public Review updateReview(UpdatedReviewRequestDTO request) {
-        var reviewToUpdate =  getReviewById(request.getId());
+        var reviewToUpdate = getReviewById(request.getId());
         reviewToUpdate.setComment(request.getComment());
         return reviewRepository.save(reviewToUpdate);
     }

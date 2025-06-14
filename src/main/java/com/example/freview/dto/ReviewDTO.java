@@ -17,5 +17,4 @@ public class ReviewDTO {
     private WatchedStatus status;
 
 
-
 }
