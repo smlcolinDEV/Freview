@@ -1,29 +1,43 @@
 package com.example.freview.controllers;
 
-import com.example.freview.models.Movie;
+import com.example.freview.dto.MovieDTO;
 import com.example.freview.services.MovieService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/movies")
 public class MovieController {
+
     private final MovieService movieService;
 
-    public MovieController(MovieService movieService){
+    public MovieController(MovieService movieService) {
         this.movieService = movieService;
     }
 
     @GetMapping
-    public List<Movie> getAllMovies(){
-        return movieService.getAllMovies();
+    public List<MovieDTO> getAllMovies() {
+        return movieService.getAllMoviesDTO();
     }
 
     @GetMapping("/popular")
-    public String getPopularMovies() {
+    public List<MovieDTO> getPopularMovies() {
         return movieService.getPopularMovies();
+    }
+
+    @PostMapping
+    public MovieDTO addMovie(@RequestBody MovieDTO movieDTO) {
+        return movieService.addMovie(movieDTO);
+    }
+
+    @PutMapping
+    public MovieDTO updateMovie(@RequestBody MovieDTO movieDTO) {
+        return movieService.updateMovie(movieDTO);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteMovie(@PathVariable Long id) {
+        movieService.deleteMovie(id);
     }
 }

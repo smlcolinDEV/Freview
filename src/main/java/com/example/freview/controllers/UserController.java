@@ -25,7 +25,7 @@ public class UserController {
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public User createUser(@RequestBody User user){
-        return userService.save(user);
+        return userService.userSave(user);
     }
     @PutMapping("/id")
     public User modifyUser(@PathVariable Long id, @RequestBody User user){

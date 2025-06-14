@@ -1,16 +1,17 @@
 package com.example.freview.models;
 
-import com.example.freview.enums.WatchedStatus;
 import jakarta.persistence.Entity;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 
 @Entity
+
+@NoArgsConstructor
+@AllArgsConstructor
 public class Serie extends Media{
     private Integer seasonCount;
 
-    public Serie(){
-
-    }
     public Serie(String title, String description, Integer seasonCount) {
         super(title, description);
         this.seasonCount = seasonCount;

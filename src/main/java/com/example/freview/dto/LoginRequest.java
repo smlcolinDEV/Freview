@@ -9,10 +9,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MediaDTO {
-    private Long id;
-    private String title;
-    private String overview;
-    // Add other fields as necessary
+public class LoginRequest {
 
+    private String username;
+
+    private String password;
 }

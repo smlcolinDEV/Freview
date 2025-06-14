@@ -10,14 +10,17 @@ import com.example.freview.models.SharedCollection;
 import com.example.freview.models.User;
 import com.example.freview.repositories.ReviewRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class ReviewService {
+    @Autowired
     private ReviewRepository reviewRepository;
 
     public ReviewService(ReviewRepository reviewRepository) {
@@ -101,4 +104,5 @@ public class ReviewService {
     public void deleteReview(Long reviewId) {
         reviewRepository.deleteById(reviewId);
     }
+
 }

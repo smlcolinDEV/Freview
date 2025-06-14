@@ -1,19 +1,15 @@
 package com.example.freview.demo;
 
-import com.example.freview.enums.WatchedStatus;
 import com.example.freview.models.*;
-import com.example.freview.repositories.ReviewRepository;
-import com.example.freview.repositories.SharedCollectionRepository;
-import com.example.freview.repositories.UserRepository;
-import com.example.freview.repositories.MediaRepostiory;
-
+import com.example.freview.repositories.*;
+import com.example.freview.services.RoleService;
 import com.example.freview.services.SharedCollectionService;
+import com.example.freview.services.UserService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Component
@@ -21,6 +17,9 @@ public class DataLoader implements CommandLineRunner {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private MediaRepostiory mediaRepository;
@@ -34,14 +33,33 @@ public class DataLoader implements CommandLineRunner {
     @Autowired
     private SharedCollectionService sharedCollectionService;
 
+    @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
+    private RoleService roleService;
+
     @Override
     @Transactional
     public void run(String... args) throws Exception {
+        Role role1 = new Role("ROLE_ADMIN");
+        Role role2 = new Role("ROLE_USER");
+        roleRepository.saveAll(List.of(role1, role2));
+
         // Create and save users
-        User user1 = new User("smlco", "Media", "smlco@gmail.com");
+        User user1 = new User("smlco", "media", "smlco@gmail.com");
         User user2 = new User("salva", "Salva", "salva@gmail.com");
-        User user3 = new User("Jinx", "Arcane", "Vander@gmail.com");
-        userRepository.saveAll(List.of(user1, user2, user3));
+        User user3 = new User("Jinx", "Arcane", "ishaowjinx@gmail.com");
+
+        // Assurez-vous que les utilisateurs existent avant d'ajouter des rôles
+        userService.userSave(user1);
+        userService.userSave(user2);
+        userService.userSave(user3);
+
+        // Ajoutez des rôles aux utilisateurs
+        roleService.addRoleToUser("smlco", "ROLE_USER");
+        roleService.addRoleToUser("Jinx", "ROLE_USER");
+        roleService.addRoleToUser("salva", "ROLE_ADMIN");
 
         // Create and save media
         Movie movie1 = new Movie("Pulp Fiction", "Tarantino's movie", 154);
@@ -50,19 +68,17 @@ public class DataLoader implements CommandLineRunner {
         Serie serie2 = new Serie("HIMYM", "How he met their mother", 9);
         mediaRepository.saveAll(List.of(movie1, movie2, serie1, serie2));
 
-
         // Create and save shared lists
         SharedCollection sharedCollection = new SharedCollection();
-        sharedCollection.setTitle("Favorite Media");
-        sharedCollectionRepository.saveAll(List.of(sharedCollection));
-        sharedCollectionService.addMediaToSharedList(sharedCollection.getId(),movie1);
-        sharedCollectionService.addUserToSharedList(sharedCollection.getId(),user1);
-        sharedCollectionService.addUserToSharedList(sharedCollection.getId(),user2);
-        sharedCollectionService.addUserToSharedList(sharedCollection.getId(),user3);
+        sharedCollection.setName("Favorite Media");
+        SharedCollection sharedCollection2 = new SharedCollection();
+        sharedCollection2.setName("Joiining Collection");
+        sharedCollectionRepository.saveAll(List.of(sharedCollection,sharedCollection2));
 
-
-
-
+        sharedCollectionService.addMediaToSharedList(sharedCollection.getId(), movie1);
+        sharedCollectionService.addUserToSharedList(sharedCollection2.getId(), user3.getId());
+        sharedCollectionService.addUserToSharedList(sharedCollection.getId(), user1.getId());
+        sharedCollectionService.addUserToSharedList(sharedCollection.getId(), user2.getId());
+        sharedCollectionService.addUserToSharedList(sharedCollection.getId(), user3.getId());
     }
 }
-

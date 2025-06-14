@@ -1,18 +1,24 @@
 package com.example.freview.models;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class SharedCollection {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String title;
+    private String name;
 
     @ManyToMany
     @JoinTable(
@@ -31,61 +37,12 @@ public class SharedCollection {
     @OneToMany(mappedBy = "sharedCollection", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews = new ArrayList<>();
 
-    public SharedCollection(Long id, String title, List<Media> mediaList) {
+    public SharedCollection(Long id, String name, List<Media> mediaList) {
         this.id = id;
-        this.title = title;
+        this.name = name;
         this.mediaList = mediaList;
     }
 
-    public SharedCollection() {
-
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public List<Media> getMediaList() {
-        return mediaList;
-    }
-
-    public void setMediaList(List<Media> mediaList) {
-        this.mediaList = mediaList;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public List<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<User> users) {
-        this.users = users;
-    }
-
-    public List<Review> getReviews() {
-        return reviews;
-    }
-    public void setReviews(List<Review> reviews) {
-        this.reviews = reviews;
-    }
-    @Override
-    public String toString() {
-        return "SharedCollection{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                '}';
-    }
 
     public void addMedia(Media savedMedia) {
         mediaList.add(savedMedia);
