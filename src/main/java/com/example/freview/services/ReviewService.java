@@ -52,7 +52,7 @@ public class ReviewService {
         for (User user : sharedCollection.getUsers()) {
             Review review = new Review();
             review.setComment("Default comment");
-            review.setRating(0.0);
+            review.setRating(null);
             review.setCreatedDate(LocalDate.now());
             review.setWatchedStatus(WatchedStatus.NOT_WATCHED);
             review.setUser(user);
@@ -67,7 +67,7 @@ public class ReviewService {
         for (Media media : sharedCollection.getMediaList()) {
             Review review = new Review();
             review.setComment("Default comment");
-            review.setRating(0.0);
+            review.setRating(null);
             review.setCreatedDate(LocalDate.now());
             review.setWatchedStatus(WatchedStatus.NOT_WATCHED);
             review.setUser(user);
@@ -90,7 +90,7 @@ public class ReviewService {
             return reviewRepository.save(updatedReview);
         }
         else{
-            throw new ResourceNotFoundException("Car not found with id: " + id);
+            throw new ResourceNotFoundException("Review not found with id: " + id);
         }
     }
 

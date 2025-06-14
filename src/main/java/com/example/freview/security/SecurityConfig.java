@@ -70,6 +70,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/login/**").permitAll()// public endpoint, we could add more if we wanted to
                         .requestMatchers("api/movies/popular").permitAll()
                         .requestMatchers("/api/serie/popular").permitAll()
+                        .requestMatchers("api/shared").permitAll()
                         .requestMatchers("api/shared/**").permitAll()
                         .requestMatchers(GET, "/api/users").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                         .requestMatchers(POST, "/api/users").hasAnyAuthority("ROLE_ADMIN")

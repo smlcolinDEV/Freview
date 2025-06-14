@@ -184,9 +184,6 @@ public class SharedCollectionService {
         reviewService.createReviewsForUserInSharedList(user, sharedCollection);
     }
 
-
-
-
     @Transactional
     public void addMediaToSharedList(Long sharedListId, Media media) {
         SharedCollection sharedCollection = sharedCollectionRepository.findById(sharedListId)
@@ -213,33 +210,7 @@ public class SharedCollectionService {
 
         reviewService.createReviewsForUserInSharedList(user, sharedCollection);
     }
-    @Transactional
-    public void addReviewToMovieInSharedCollection(Long sharedCollectionId, Long mediaId, String comment, Double rating) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userService.findByUsername(username);
 
-        SharedCollection sharedCollection = sharedCollectionRepository.findById(sharedCollectionId)
-                .orElseThrow(() -> new EntityNotFoundException("SharedCollection non trouvée"));
-
-        Media media = mediaRepostiory.findById(mediaId)
-                .orElseThrow(() -> new EntityNotFoundException("Media non trouvé"));
-
-
-        if (!sharedCollection.getMediaList().contains(media)) {
-            throw new IllegalArgumentException("Ce media n'est pas présent dans la SharedCollection");
-        }
-
-
-        Review review = new Review();
-        review.setUser(user);
-        review.setMedia(media);
-        review.setSharedCollection(sharedCollection);
-        review.setComment(comment);
-        review.setRating(rating);
-        review.setCreatedDate(LocalDate.now());
-
-        reviewRepository.save(review);
-    }
     @Transactional
     public void updateReviewForMediaInSharedCollection(Long sharedCollectionId, Long mediaId, String newComment, Double newRating) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
